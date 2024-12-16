@@ -1,47 +1,63 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Spotify Clone</title>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Styles / Scripts -->
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
+</head>
+<body class="flex items-center justify-center min-h-screen bg-black text-white font-sans">
+    <div class="w-full max-w-md p-6 bg-gray-900 rounded-lg shadow-lg">
+        <div class="text-center mb-8">
+            <h1 class="mt-4 text-2xl font-semibold">Log in to Moodify</h1>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+            @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- Email Address -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="block w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-green-500 focus:border-green-500">
+                @error('email')<p class="mt-2 text-sm text-red-500">{{ $message }}</p>@enderror
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                <input id="password" type="password" name="password" required class="block w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-green-500 focus:border-green-500">
+                @error('password')<p class="mt-2 text-sm text-red-500">{{ $message }}</p>@enderror
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <!-- Remember Me -->
+            <div class="flex items-center">
+                <input id="remember_me" type="checkbox" name="remember" class="w-4 h-4 text-green-500 bg-gray-800 border-gray-700 rounded focus:ring-green-400">
+                <label for="remember_me" class="ml-2 text-sm text-gray-300">Remember me</label>
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
+            <!-- Actions -->
+            <div class="flex items-center justify-between">
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" class="text-sm text-green-500 hover:underline">Forgot your password?</a>
+                @endif
+
+                <button type="submit" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md">Log in</button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            @if (Route::has('register'))
+                <p class="text-sm text-gray-400">Don't have an account? <a href="{{ route('register') }}" class="text-green-500 hover:underline">Sign up</a></p>
             @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
-    </form>
-</x-guest-layout>
+    </div>
+</body>
+</html>
