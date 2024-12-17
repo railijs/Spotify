@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Playlist extends Model
+class Song extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'playlist_id',
+        'spotify_id',
         'name',
-        'mood',
-        'description',
+        'artist',
     ];
 
-    // Define the relationship with Song
-    public function songs()
+    public function playlist()
     {
-        return $this->hasMany(Song::class);
+        return $this->belongsTo(Playlist::class);
     }
 }

@@ -6,12 +6,14 @@
                <!-- Logo -->
                <div class="shrink-0 flex items-center">
     <!-- Logo -->
+<!-- Logo -->
 <div class="shrink-0 flex items-center">
     <a href="{{ route('dashboard') }}">
-        <!-- Replace with Spotify PNG logo -->
-        <img src="{{ asset('/Users/skolnieksadmin/Desktop/spotify/Spotify/spotify.png') }}" alt="Spotify Logo" class="block h-9 w-auto" />
+        <!-- Updated path for the Spotify PNG logo -->
+        <img src="{{ asset('spotify.png') }}" alt="Spotify Logo" class="block h-9 w-auto" />
     </a>
 </div>
+
 
 
                 <!-- Navigation Links -->

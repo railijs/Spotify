@@ -45,6 +45,16 @@
                     @enderror
                 </div>
 
+                <!-- Add Songs -->
+                <!-- Songs -->
+<div>
+    <label for="songs" class="block text-sm font-medium text-gray-300">Songs</label>
+    <textarea id="songs" name="songs[]" rows="3"
+        class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        placeholder="Enter song names, one per line"></textarea>
+</div>
+
+
                 <!-- Submit Button -->
                 <div class="flex justify-center">
                     <button type="submit"
