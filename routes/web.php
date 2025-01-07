@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaylistController;
 
+Route::get('/playlists/history', [PlaylistController::class, 'history'])->name('playlists.history');
+
+
 Route::get('/', function () {
     return view('welcome');
 });

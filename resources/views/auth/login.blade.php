@@ -27,14 +27,18 @@
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="block w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-green-500 focus:border-green-500">
-                @error('email')<p class="mt-2 text-sm text-red-500">{{ $message }}</p>@enderror
+                @error('email')
+                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Password -->
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
                 <input id="password" type="password" name="password" required class="block w-full mt-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-green-500 focus:border-green-500">
-                @error('password')<p class="mt-2 text-sm text-red-500">{{ $message }}</p>@enderror
+                @error('password')
+                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Remember Me -->

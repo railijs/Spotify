@@ -13,11 +13,13 @@ class Playlist extends Model
         'name',
         'mood',
         'description',
+        'spotify_playlist_link',
+        'image_url',
     ];
 
-    // Define the relationship with Song
+    // Define the relationship with songs
     public function songs()
     {
-        return $this->hasMany(Song::class);
+        return $this->hasMany(Song::class); // Assuming Song is the related model
     }
 }

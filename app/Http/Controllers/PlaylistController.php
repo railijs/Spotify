@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Playlist;
-use App\Models\Song;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class PlaylistController extends Controller
 {
@@ -20,8 +18,7 @@ class PlaylistController extends Controller
             'name' => 'required|string|max:255',
             'mood' => 'required|string',
             'description' => 'nullable|string',
-            'songs' => 'nullable|array', // Allow adding songs during playlist creation
-            'songs.*' => 'string', // Each song must be a string (Spotify track ID or name)
+            'spotify_playlist_link' => 'nullable|url', // Accept Spotify playlist link
         ]);
 
         // Create a new playlist
@@ -31,19 +28,9 @@ class PlaylistController extends Controller
             'description' => $request->description,
         ]);
 
-        // Add songs to the playlist (if provided)
-        if ($request->songs) {
-            foreach ($request->songs as $songName) {
-                $spotifySong = $this->searchSongOnSpotify($songName);
-
-                if ($spotifySong) {
-                    $playlist->songs()->create([
-                        'spotify_id' => $spotifySong['id'],
-                        'name' => $spotifySong['name'],
-                        'artist' => $spotifySong['artist'],
-                    ]);
-                }
-            }
+        // If a Spotify playlist link is provided, extract songs
+        if ($request->spotify_playlist_link) {
+            $this->addSongsFromSpotifyPlaylist($playlist, $request->spotify_playlist_link);
         }
 
         return redirect()->route('playlists.create')->with('success', 'Playlist created successfully!');
@@ -55,45 +42,29 @@ class PlaylistController extends Controller
         return view('playlists.history', compact('playlists'));
     }
 
-    private function searchSongOnSpotify($songName)
+    private function addSongsFromSpotifyPlaylist(Playlist $playlist, string $playlistLink)
     {
-        $clientId = config('services.spotify.client_id');
-        $clientSecret = config('services.spotify.client_secret');
+        // Extract the playlist ID from the link
+        preg_match('/(?:https?:\/\/)?(?:www\.)?(?:open\.|play\.|music\.)?spotify\.com\/playlist\/([a-zA-Z0-9]+)/', $playlistLink, $matches);
 
-        // Obtain access token
-        $tokenResponse = Http::asForm()->post('https://accounts.spotify.com/api/token', [
-            'grant_type' => 'client_credentials',
-            'client_id' => $clientId,
-            'client_secret' => $clientSecret,
-        ]);
+        if (isset($matches[1])) {
+            $playlistId = $matches[1];
 
-        if (!$tokenResponse->successful()) {
-            return null; // Handle error if token request fails
-        }
+            // Here you would typically fetch the playlist details using an API call.
+            // However, since we are not using the API, we will assume you have a way to get the song details.
+            // For demonstration purposes, let's assume you have a method that fetches songs from your database or a predefined list.
 
-        $accessToken = $tokenResponse->json()['access_token'];
-
-        // Search for the song
-        $response = Http::withToken($accessToken)->get('https://api.spotify.com/v1/search', [
-            'q' => $songName,
-            'type' => 'track',
-            'limit' => 1,
-        ]);
-
-        if (!$response->successful()) {
-            return null; // Handle error if song search fails
-        }
-
-        $track = $response->json()['tracks']['items'][0] ?? null;
-
-        if ($track) {
-            return [
-                'id' => $track['id'],
-                'name' => $track['name'],
-                'artist' => $track['artists'][0]['name'],
+            // Example: Fetch songs based on your own logic or data source
+            // This is a placeholder for actual song retrieval logic
+            $songs = [
+                ['spotify_id' => 'song_id_1', 'name' => 'Song 1', 'artist' => 'Artist 1'],
+                ['spotify_id' => 'song_id_2', 'name' => 'Song 2', 'artist' => 'Artist 2'],
+                // Add more songs as needed
             ];
-        }
 
-        return null;
+            foreach ($songs as $song) {
+                $playlist->songs()->create($song);
+            }
+        }
     }
 }

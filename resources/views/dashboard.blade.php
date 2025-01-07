@@ -29,7 +29,7 @@
 
                     <!-- Section for Webcam and Face Detection -->
                     <div class="mt-6">
-                        <h4 class="text-xl text-white mb-4">Face Detection</h4>
+                        <h4 class="text-xl text-white mb-4">Sigma Detection</h4>
                         <div class="relative">
                             <video id="video" autoplay muted class="w-full h-96 object-cover rounded-lg"></video>
                             <canvas id="overlay" class="absolute top-0 left-0 w-full h-full"></canvas>
