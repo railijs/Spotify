@@ -3,6 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaylistController;
+use Illuminate\Support\Facades\File;
+
+Route::get('/MoodDetectionApp', function () {
+    return File::get(public_path('MoodDetectionApp/index.html'));
+});
+
 
 Route::get('/playlists/history', [PlaylistController::class, 'history'])->name('playlists.history');
 

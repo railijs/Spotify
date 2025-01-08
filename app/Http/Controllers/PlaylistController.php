@@ -13,24 +13,24 @@ class PlaylistController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'mood' => 'required|string',
-        'description' => 'nullable|string',
-        'spotify_playlist_link' => 'nullable|url', // Accept Spotify playlist link
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'mood' => 'required|string',
+            'description' => 'nullable|string',
+            'spotify_playlist_link' => 'nullable|url', // Accept Spotify playlist link
+        ]);
 
-    // Create a new playlist with all relevant details
-    Playlist::create([
-        'name' => $request->name,
-        'mood' => $request->mood,
-        'description' => $request->description,
-        'spotify_playlist_link' => $request->spotify_playlist_link,
-    ]);
+        // Create a new playlist with all relevant details
+        Playlist::create([
+            'name' => $request->name,
+            'mood' => $request->mood,
+            'description' => $request->description,
+            'spotify_playlist_link' => $request->spotify_playlist_link,
+        ]);
 
-    return response()->json(['success' => true], 201); // Return a success response after saving
-}
+        return response()->json(['success' => true], 201); // Return a success response after saving
+    }
 
     public function history()
     {
@@ -47,11 +47,7 @@ class PlaylistController extends Controller
             $playlistId = $matches[1];
 
             // Here you would typically fetch the playlist details using an API call.
-            // However, since we are not using the API, we will assume you have a way to get the song details.
-            // For demonstration purposes, let's assume you have a method that fetches songs from your database or a predefined list.
-
-            // Example: Fetch songs based on your own logic or data source
-            // This is a placeholder for actual song retrieval logic
+            // Placeholder for actual song retrieval logic
             $songs = [
                 ['spotify_id' => 'song_id_1', 'name' => 'Song 1', 'artist' => 'Artist 1'],
                 ['spotify_id' => 'song_id_2', 'name' => 'Song 2', 'artist' => 'Artist 2'],
@@ -63,9 +59,23 @@ class PlaylistController extends Controller
             }
         }
     }
-    public function index()
-{
-    return Playlist::all(); // Return all playlists as JSON
-}
 
+    public function index()
+    {
+        return Playlist::all(); // Return all playlists as JSON
+    }
+
+    public function getPlaylistsByMood(Request $request)
+    {
+        // Validate the mood parameter
+        $request->validate([
+            'mood' => 'required|string',
+        ]);
+
+        // Retrieve playlists based on the mood from the database
+        $mood = $request->query('mood');
+        $playlists = Playlist::where('mood', $mood)->get();
+
+        return response()->json($playlists); // Return the playlists as JSON
+    }
 }
