@@ -13,28 +13,24 @@ class PlaylistController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'mood' => 'required|string',
-            'description' => 'nullable|string',
-            'spotify_playlist_link' => 'nullable|url', // Accept Spotify playlist link
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'mood' => 'required|string',
+        'description' => 'nullable|string',
+        'spotify_playlist_link' => 'nullable|url', // Accept Spotify playlist link
+    ]);
 
-        // Create a new playlist
-        $playlist = Playlist::create([
-            'name' => $request->name,
-            'mood' => $request->mood,
-            'description' => $request->description,
-        ]);
+    // Create a new playlist with all relevant details
+    Playlist::create([
+        'name' => $request->name,
+        'mood' => $request->mood,
+        'description' => $request->description,
+        'spotify_playlist_link' => $request->spotify_playlist_link,
+    ]);
 
-        // If a Spotify playlist link is provided, extract songs
-        if ($request->spotify_playlist_link) {
-            $this->addSongsFromSpotifyPlaylist($playlist, $request->spotify_playlist_link);
-        }
-
-        return redirect()->route('playlists.create')->with('success', 'Playlist created successfully!');
-    }
+    return response()->json(['success' => true], 201); // Return a success response after saving
+}
 
     public function history()
     {
@@ -67,4 +63,9 @@ class PlaylistController extends Controller
             }
         }
     }
+    public function index()
+{
+    return Playlist::all(); // Return all playlists as JSON
+}
+
 }

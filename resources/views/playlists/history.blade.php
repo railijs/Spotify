@@ -7,8 +7,6 @@
                 Playlist History
             </h1>
 
-
-
             <!-- Empty Playlist Message -->
             @if($playlists->isEmpty())
                 <p class="text-white text-lg">No playlists created yet.</p>
@@ -21,7 +19,7 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Playlist Name</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Mood</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Description</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Created At</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Spotify Link</th> <!-- Updated header -->
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Mood Selected At</th>
                             </tr>
                         </thead>
@@ -38,7 +36,7 @@
                                         {{ $playlist->description }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-                                        {{ $playlist->created_at->format('Y-m-d H:i:s') }}
+                                        <a href="{{ $playlist->spotify_playlist_link }}" target="_blank" class="text-blue-400 underline">{{ $playlist->spotify_playlist_link }}</a> <!-- Spotify link -->
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
                                         {{ $playlist->updated_at->format('Y-m-d H:i:s') }} <!-- Assuming updated_at stores mood selection time -->

@@ -23,7 +23,7 @@
     </x-nav-link>
     
      <x-nav-link :href="route('playlists.create')" :active="request()->routeIs('playlists.create')">
-        {{ __('Create Playlist') }}
+        {{ __('Choose Mood') }}
     </x-nav-link>
     <x-nav-link :href="route('playlists.history')" :active="request()->routeIs('playlists.history')">
         {{ __('Playlist History') }}
@@ -85,7 +85,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('playlists.create')" :active="request()->routeIs('playlists.create')">
-                {{ __('Create Playlist') }}
+                {{ __('Choose Mood') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('playlists.history')" :active="request()->routeIs('playlists.history')">
                 {{ __('Playlist History') }}

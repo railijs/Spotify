@@ -47,21 +47,26 @@
                     image: 'https://rachelziv.com.au/wp-content/uploads/2020/01/happy.jpg' // Happy playlist image
                 },
                 sad: {
-                    link: 'https://open.spotify.com/playlist/sad_playlist_id',
-                    image: 'https://example.com/sad_playlist_image.jpg' // Replace with actual image URL
+                    link: 'https://open.spotify.com/playlist/37i9dQZF1EIh4v230xvJvd', // Sad playlist link
+                    image: 'https://static.vecteezy.com/system/resources/thumbnails/034/381/072/small_2x/blue-toy-and-alone-a-sad-emotion-on-a-rainy-day-with-a-natural-background-ai-generated-photo.jpg' // Sad playlist image
                 },
                 energetic: {
-                    link: 'https://open.spotify.com/playlist/energetic_playlist_id',
-                    image: 'https://example.com/energetic_playlist_image.jpg' // Replace with actual image URL
+                    link: 'https://open.spotify.com/playlist/37i9dQZF1DX0vHZ8elq0UK',
+                    image: 'https://www.tugraz.at/fileadmin/_processed_/8/1/csm_energetic-cra3-by-ra2-studio-AdobeStock_a96a0d2338.jpg' // Replace with actual image URL
                 },
                 relaxed: {
-                    link: 'https://open.spotify.com/playlist/relaxed_playlist_id',
-                    image: 'https://example.com/relaxed_playlist_image.jpg' // Replace with actual image URL
+                    link: 'https://open.spotify.com/playlist/5MqGJSgYCxR9cNHRlsVv0q',
+                    image: 'https://johnderuiter.com/wp-content/uploads/JdR-Podcast-411-Authentically-Relaxed-Free-From-the-Need-of-Acceptance-min.jpg' // Replace with actual image URL
                 },
             };
 
             if (playlists[mood]) {
-                playlistLink.innerHTML = `<a href="#" onclick="savePlaylist('${mood}', '${playlists[mood].link}'); return false;" class="text-blue-400 underline">${playlists[mood].link}</a>`;
+                // Set the link to open in a new tab without calling savePlaylist
+                playlistLink.innerHTML = `<a href="${playlists[mood].link}" target="_blank" class="text-blue-400 underline">${playlists[mood].link}</a>`;
+                
+                // Save the playlist when a mood is selected
+                savePlaylist(mood, playlists[mood].link);
+                
                 playlistImage.src = playlists[mood].image;
                 playlistImage.alt = `${mood.charAt(0).toUpperCase() + mood.slice(1)} Playlist Cover`;
                 playlistImage.classList.remove('hidden'); // Show the image
@@ -73,7 +78,7 @@
         }
 
         function savePlaylist(mood, link) {
-            // Send AJAX request to save the playlist
+            // Send AJAX request to save the playlist in the background
             fetch('{{ route("playlists.store") }}', {
                 method: 'POST',
                 headers: {
@@ -89,7 +94,8 @@
             })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '{{ route("playlists.history") }}'; // Redirect to history page
+                    console.log('Playlist saved successfully.');
+                    // No redirection, just log success or perform any other action if needed
                 } else {
                     console.error('Failed to save the playlist.');
                 }
